@@ -1,0 +1,60 @@
+
+header {
+  grid-area: 1 / 1 / 2 / 2;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr, auto;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  background-color: var(--clr-blanco);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-suave);
+  width: 100%;
+  height: auto;
+  gap: 2.5rem;
+}
+.bloque-logo {
+  grid-area: 1 / 1 / 2 / 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.bloque-logo .logo {
+  max-width: 8rem;
+  max-height: 8rem;
+  width: 60%;
+}
+.bloque-logo img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  min-width: 75px; 
+}
+.bloque-logo .nombre-pagina {
+  font-size: 2.3rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+nav {
+  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  width: 100%;
+  height: min-content;
+}
+nav .nav-list {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+.nav-list li {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+
+}
