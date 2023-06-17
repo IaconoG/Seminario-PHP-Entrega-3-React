@@ -9,7 +9,9 @@
   --clr-tercero: #FFDEAD;
 
   /* Fonts */
-  --ff-primero: "Roboto", "Arial", sans-serif;
+  --ff-primero: 'Overpass', sans-serif;
+  --ff-titulo: 'Tinos', serif;
+
 
   /* Shadows */
   --shadow-suave: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -39,7 +41,7 @@ body {
   width: 100%;
 }
 h1 {
-  font-family: display;
+  font-family: var(--ff-titulo);
 }
 h3 {
   font-size: 3rem;
@@ -48,6 +50,9 @@ p,
 img,
 label {
   font-size: 1.6rem;
+}
+nav > ul > li > a{
+  font-size: 2.2rem;
 }
 a {
   text-decoration: none;
@@ -66,7 +71,8 @@ label[for="imagen"] {
   border-radius: var(--default-radius-border);
   box-shadow: var(--shadow-suave);
   padding: 0.5rem;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
+  font-family: var(--ff-primero);
   width: 100%;
   background-color: var(--clr-segndo);
   border: 1px solid transparent;
@@ -126,7 +132,7 @@ input[type="submit"]:hover {
 /* Menu de Filtros (aside) */
 .filtros {
   background-color: var(--clr-tercero)  ;
-  width: 20vh;
+  width: 25vh;
   min-width: 200px;
   height: 100%;
 
