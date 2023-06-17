@@ -10,11 +10,11 @@ import logo from "../assets/img/joystick-color.png";
 const HeaderComponent = () => {
   return (
     <header>
-      <div class="bloque-logo">
-        <div class="nombre-pagina">
+      <div className="bloque-logo">
+        <div className="nombre-pagina">
           <h1>GameStore</h1>
         </div>
-        <div to='/' class="logo">  {/* FIXME: Debo cambiar los anchor por LINK ver el link en README */}
+        <div className="logo">  
           <img src={logo} alt="Icono de la pagina" />
         </div>
         <NavBarComponent />
