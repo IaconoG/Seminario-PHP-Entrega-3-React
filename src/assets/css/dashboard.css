@@ -183,17 +183,18 @@ select::-webkit-scrollbar-thumb:active {
 }
 .bloque-juegos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, max-content));
+  grid-template-columns: repeat(auto-fit, 400px);
     /* Permite q las columnas se ajusten automaticamente para adaptarse al ancho disponible del contenedor */
     /* auto-fit -> crea tantas columas como sea posible para llenar el espacio disponible */
     /* minmax(min, max) -> Especifica el tama;o minimo y maximo de cada columna */
     /* 1fr -> 1 fraccion de espacio, la columna puede crecer para ocupar el espacio disponible si hay */
-  gap: 5rem 4rem;
+  gap: 5rem 5rem;
+  justify-content: space-around;
 }
 
 .juego {
   --padding: 1.5rem 2rem;
-  max-width: 500px;
+  max-width: 400px;
   width: 100%;
   overflow: hidden;
   justify-self: center;
@@ -233,6 +234,8 @@ select::-webkit-scrollbar-thumb:active {
   display: flex;
   flex-direction: column;
   margin-bottom: 0.5rem;
+  height: 60px;
+  justify-content: center;
 }
 .juego .contenido-juego .titulo-juego {
   font-size: 3rem;
