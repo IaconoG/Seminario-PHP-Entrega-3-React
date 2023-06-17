@@ -10,61 +10,33 @@ import Footer from '../../components/FooterComponent';
 
 // Importacion de assets
 import '../../assets/css/dashboard.css';
-import { ajustarSelects } from '../../assets/js/ajustarSelects.js';
+import { ajustarSelects } from '../../assets/js/ajustarSelects';
 
 // Importacion de datos
-import { obtenerGeneros } from '../../components/data/obtenerGeneros.js';
+import { obtenerGeneros } from '../../components/data/obtenerGeneros';
+import { obtenerPlataformas } from '../../components/data/obtenerPlataformas';
+import { obtenerJuegosFiltados } from '../../components/data/obtenerJuegosFiltrados';
+import { obtenerNombres } from '../../components/data/obtenerNombres';
 
 const  DashboardPage = () => {
   const baseURL = 'http://localhost:8000/public';
   const [juegos, setJuegos] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [plataformas, setPlataformas] = useState([]);
+  const [nombres, setNombres] = useState([]);
   const [errores, setErrores] = useState([]);
-  
-  const filtrarJuegos = async (nombre, plataforma, genero, orden) => {
-    await axios.get(baseURL + '/juegos', {
-      params: {
-        nombre: nombre,
-        id_plataforma: (plataforma !== '') ? Number(plataforma) : null,
-        id_genero: (genero !== '') ? Number(genero) : null,
-        orden: orden
-      }})
-      .then(response => {
-        setJuegos(response.data.datos);
-      })
-      .catch(error => {
-        setErrores(error);
-      });     
-  };
+
   useEffect(() => {
-    const fecthGeneros = async () => {
-      await axios.get(baseURL + '/generos')
-        .then(response => {
-          setGeneros(response.data.datos);
-        })
-        .catch(error => { // FIXME: No puedo atrar los errores de la api, primero me toma el errore de axios
-          setErrores(error);
-        });
-    };
-    const fecthPlataformas = async () => {
-      await axios.get(baseURL + '/plataformas')
-        .then(response => {
-          setPlataformas(response.data.datos);
-        })
-        .catch(error => {
-          setErrores(error);
-        });
-    };
-    filtrarJuegos('', '', '', 'ASC');
-    // ---
-    Promise.all([fecthGeneros(), fecthPlataformas()])
-      .then(() => {
-        ajustarSelects();
-      });
-    // Promise.all -> permite ejecutar varias promesas al mismo tiempo
+    // --- Obtener datos de la api ---
+    obtenerNombres(baseURL, setNombres, setErrores);
+    Promise.all([obtenerGeneros(baseURL, setGeneros, setErrores), obtenerPlataformas(baseURL, setPlataformas, setErrores)])
+    .then(() => {
+      ajustarSelects();
+    });
+      // Promise.all -> permite ejecutar varias promesas al mismo tiempo
       // .then -> se ejecuta cuando todas las promesas se resuelven
       // Esto nos garantiza que los estados generos y plataformas ya hayan sido actualizados antes de llamar a ajustarSelects().
+    obtenerJuegosFiltados(baseURL, setJuegos, setErrores, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
   }, []); 
 
   // === Evento envio del formulario ===
@@ -77,30 +49,36 @@ const  DashboardPage = () => {
     let orden = event.target.elements.ordenamiento.value;
     
     // Llamada a la función de filtrarJuegos con los valores del formulario
-    filtrarJuegos(nombre, plataforma, genero, orden);
+    obtenerJuegosFiltados(baseURL, setJuegos, setErrores, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden});
   };
 
   return (
     <>
       <Header />
       {/*Cuerpo de la pagina*/}
-      <main class="main">
-        <div class="contenido">
+      <main className="main">
+        <div className="contenido">
           {/*  Seccion que contiene los filtors del contenido */}
-          <aside class="filtros">
+          <aside className="filtros">
             <h3>Filtros</h3>
-            <form id="form-filtro" class="from-filtros" onSubmit={handleSubmitFiltro}> 
+            <form id="form-filtro" className="from-filtros" onSubmit={handleSubmitFiltro}> 
               {/* Filtro por nombre */}
-              <div class="bloque-filtro-nombre">
-                <label for="nombres" class="titulo-filtro">Por nombre</label>
+              <div className="bloque-filtro-nombre">
+                <label htmlFor="nombres" className="titulo-filtro">Por nombre</label>
                 <input id="nombres" name="nombres" list="listado-nombres" />
-                <datalist id="nombres">
-                  {/* <?php require_once('components/includes/opciones_nombres.php')?> */}
+                <datalist id="listado-nombres">
+                  {
+                    nombres.map((nombre, idx) => {
+                      return (
+                        <option key={idx} value={nombre} name={nombre}></option>
+                      )
+                    })
+                  }
                 </datalist>
               </div>
               {/* Filtro por genero */}
-              <div class="bloque-filtro-genero">
-                <label for="generos" class="titulo-filtro">Por Genero</label>
+              <div className="bloque-filtro-genero">
+                <label htmlFor="generos" className="titulo-filtro">Por Genero</label>
                 <select name="generos" id="generos" title="listado-generos">
                   <option value="">Ninguna selección</option>
                   {
@@ -114,8 +92,8 @@ const  DashboardPage = () => {
                 </select>
               </div>
               {/* Filtro por plataforma */}
-              <div class="bloque-filtro-plataforma">
-                <label for="plataformas" class="titulo-filtro">Por plataforma</label>
+              <div className="bloque-filtro-plataforma">
+                <label htmlFor="plataformas" className="titulo-filtro">Por plataforma</label>
                 <select name="plataformas" id="plataformas" title="listado-plataformas">
                   <option value="">Ninguna selección</option>
                   {
@@ -128,62 +106,54 @@ const  DashboardPage = () => {
                   }
                 </select>
               </div>
-              <div class="ordenamiento_juego">
+              <div className="ordenamiento_juego">
               {/* Ordenamiento por A-Z */}
-              <label for="ordenamiento" class="titulo-filtro">ordenamiento</label>
+              <label htmlFor="ordenamiento" className="titulo-filtro">ordenamiento</label>
               <select name="ordenamiento" id="ordenamiento" title="listado-ordenamientos"> 
-                <option value="ASC">A - Z</option>
-                <option value="DESC">Z - A</option>
+                <option key='1' value="ASC">A - Z</option>
+                <option key='2' value="DESC">Z - A</option>
               </select>
             </div>
               <input type="submit" value="Filtrar"></input>
             </form>
           </aside>
           {/* Seccion que muestra el contenido */}
-          <section class="juegos">
-            <div class="bloque-juegos">
+          <section className="juegos">
+            <div className="bloque-juegos">
             {
               juegos.map(juego => {
                 return (
-                  <div class='juego' id={juego.nombre}>
-                    <div class="header-juego">
+                  <div className='juego' id={juego.nombre}>
+                    <div className="header-juego">
                       <img src={`data:${juego.tipo_imagen};base64,${juego.imagen}`} alt={`Portada del ${juego.nombre}`} loading="lazy" />
                     </div>
-                    <div class="contenido-juego">
-                      <div class="contenedor-titulo-juego">
-                        <p class="titulo-juego">{juego.nombre}</p>
-                        <div class="subrallado"></div>
+                    <div className="contenido-juego">
+                      <div className="contenedor-titulo-juego">
+                        <p className="titulo-juego">{juego.nombre}</p>
+                        <div className="subrallado"></div>
                       </div>
-                      <p class="descripcion-juego">{juego.descripcion}</p>
+                      <p className="descripcion-juego">{juego.descripcion}</p>
                       <div>
-                        <p class="contenido-subtitulo">plataforma</p>
-                        <ul class="plataformas-juego">
+                        <p className="contenido-subtitulo">plataforma</p>
+                        <ul className="plataformas-juego">
                           <li>{
-                            plataformas.map (plataforma => {
-                              if (plataforma.id == juego.id_plataforma) {
-                                return plataforma.nombre;
-                              }
-                            })
+                            plataformas.find(plataforma => plataforma.id === juego.id_plataforma)?.nombre
                           }</li>
                         </ul>
                       </div>
                       <div>
-                        <p class="url-juego contenido-subtitulo">pagina oficial</p>
-                        <ul class="url-juego">
-                          <li class="url">
-                            <a href={juego.url} target='_blank'>{juego.url}</a>
+                        <p className="url-juego contenido-subtitulo">pagina oficial</p>
+                        <ul className="url-juego">
+                          <li className="url">
+                            <a href={juego.url} target='_blank' rel='noopener noreferrer'>{juego.url}</a>
                           </li>
                         </ul>
                       </div>
                       <div>
-                        <p class="contenido-subtitulo">genero</p>
-                        <ul class="generos-juego">
+                        <p className="contenido-subtitulo">genero</p>
+                        <ul className="generos-juego">
                           <li>{
-                            generos.map (genero => {
-                              if (genero.id == juego.id_genero) {
-                                return genero.nombre;
-                              }
-                            })
+                            generos.find(genero => genero.id === juego.id_genero)?.nombre
                           }</li>
                         </ul>
                       </div>
