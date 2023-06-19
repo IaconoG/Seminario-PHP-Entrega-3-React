@@ -3,7 +3,7 @@
 */
 import axios from 'axios';
 
-const obtenerNombres = async (baseURL, setNombres, setErrores) => {
+const obtenerNombres = async (baseURL, setNombres) => {
   await axios.get(baseURL + '/juegos')
     .then(response => {
       const juegos = response.data.datos;
@@ -13,9 +13,7 @@ const obtenerNombres = async (baseURL, setNombres, setErrores) => {
       }
       setNombres(nombres);
     })
-    .catch(error => { // FIXME: No puedo atrar los errores de la api, primero me toma el errore de axios
-      setErrores(error);
-    });
+    .catch(error => {});
 }
 
 export { obtenerNombres };

@@ -3,14 +3,12 @@
 */
 import axios from 'axios';
 
-const obtenerGeneros = async (baseURL, setGeneros, setErrores) => {
+const obtenerGeneros = async (baseURL, setGeneros) => {
   await axios.get(baseURL + '/generos')
     .then(response => {
-      setGeneros(response.data.datos);
+      setGeneros(response.data.datos);    
     })
-    .catch(error => { // FIXME: No puedo atrar los errores de la api, primero me toma el errore de axios
-      setErrores(error);
-    });
+    .catch(error => {});
 }
 
 export { obtenerGeneros };

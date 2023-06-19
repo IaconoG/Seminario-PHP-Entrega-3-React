@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 
-const obtenerJuegosFiltados = async (baseURL, setJuegos, setErrores, filtro) => {
+const obtenerJuegosFiltados = async (baseURL, setJuegos, filtro) => {
   await axios.get(baseURL + '/juegos', {
     params: {
       nombre: filtro.nombre,
@@ -15,9 +15,7 @@ const obtenerJuegosFiltados = async (baseURL, setJuegos, setErrores, filtro) => 
     .then(response => {
       setJuegos(response.data.datos);
     })
-    .catch(error => {
-      setErrores(error);
-    });     
+    .catch(error => {});     
 };
 
 export { obtenerJuegosFiltados }
