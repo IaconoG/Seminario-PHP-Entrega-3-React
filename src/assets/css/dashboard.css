@@ -4,9 +4,11 @@
   --clr-blanco: #F8F8FF;
   --clr-negro: #333;
   --clr-gris: #808080;
-  --clr-primero: teal;
-  --clr-segndo: #fcfbe0;
-  --clr-tercero: #FFDEAD;
+  --clr-primero: #7e634e;
+  --clr-primero-ligth: #907761;
+  --clr-segndo: #F8F8FF;
+  --clr-tercero: #c7b69f;
+
 
   /* Fonts */
   --ff-primero: 'Overpass', sans-serif;
@@ -20,6 +22,8 @@
 
   /* Border */
   --default-radius-border: 0.5rem;
+  --main-radius-border: 2.4rem;
+  --inner-radius-border: calc(var(--main-radius-border) - 0.8rem);
 
 }
 /** === Establecemos una configuracion incial del css === **/
@@ -36,7 +40,6 @@ html {
 }
 body {
   font-family: var(--ff-primero);
-  font-size: 1rem;
   width: 100%;
 }
 h1 {
@@ -90,12 +93,13 @@ select:focus {
 }
 input[type="submit"] {
   width: 100%;
-  height: 3rem;
+  height: 4rem;
   border: 1px solid transparent;
   box-shadow: var(--shadow-suave);
   border-radius: 2rem;
   cursor: pointer;
-  background-color: var(--clr-primero);
+  background-color: var(--clr-primero-ligth);
+  color: var(--clr-blanco);
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.15rem;
@@ -125,7 +129,7 @@ input[type="submit"]:hover {
   width: 80vw;
   min-width: 700px;
   min-height: 100%;
-  border-radius: var(--default-radius-border);
+  border-radius: var(--main-radius-border);
   overflow: hidden;
 }
 /* Menu de Filtros (aside) */
@@ -134,22 +138,47 @@ input[type="submit"]:hover {
   width: 25vh;
   min-width: 200px;
   height: 100%;
-
+  padding-block: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
   gap: 2rem;
 }
+.filtros > * {
+  width: 80%;
+}
+.filtros h3 {
+  text-align: center;
+}
 .filtros form .titulo-filtro {
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-weight: 700;
   text-transform: capitalize;
-  padding-bottom: 1rem;
   display: inline-block;
 }
 .filtros form > div {
-  margin: 0 0 4rem 0;
+  margin: 0 0 2.5rem 0;
+}
+/* Menu de Carga de datos (aside) */
+.contenedor-cargar-datos {
+  width: 90%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem 0;
+  padding: 2rem 1rem;
+  margin: 5rem 0 0 0;
+  white-space: nowrap;
+  box-shadow: var(--shadow-suave);
+  border-radius: var(--inner-radius-border);
+  background-color: var(--clr-primero-ligth);
+  color: white;
+}
+.contenedor-cargar-datos > input {
+  background-color: var(--clr-tercero);
+  color: var(--clr-negro);
+  letter-spacing: 0.03rem;
 }
 
 select option{
@@ -246,6 +275,7 @@ select::-webkit-scrollbar-thumb:active {
   font-size: 3rem;
   font-weight: 700;
   line-height: 100%;  
+  text-transform: capitalize;
 }
 .subrallado {
   width: 100%;
