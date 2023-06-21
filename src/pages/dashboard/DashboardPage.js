@@ -36,6 +36,8 @@ const  DashboardPage = () => {
       .then(() => { setEstadoAjusteSelects(true); })
     ]);
     obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
+    console.log(juegos);
+
   }, []);
 
   useEffect(() => {
@@ -47,19 +49,22 @@ const  DashboardPage = () => {
 
   useEffect(() => {
     if (estadoBtnCargaDatos) {
-      Promise.all([ cargarData(baseURL, setMessage) ])
+      Promise.all([ cargarData(baseURL, setMessage, 'generos'), cargarData(baseURL, setMessage, 'plataformas')])
         .then (() => {
-          Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)
+          Promise.all([ cargarData(baseURL, setMessage, 'juegos')])
+            .then(() => { 
+              obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
+            });
+          Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)])
             .then(() => { setEstadoAjusteSelects(true); })
-          ]);
-          obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
-        });
+        })
       setEstadoBtnCargaDatos(false);
     }
   }, [estadoBtnCargaDatos]); 
 
   useEffect (() => {
     if (estadoBtnEliminarDatos) {
+      // FIXME: Esto es para la pagina de plataformas y generos aca no deberiamos utilizarlo
       // Promise.all([ vaciarTabla(baseURL, setMessage, 'plataformas'), vaciarTabla(baseURL, setMessage, 'generos')
       //   .then(() => { 
       //     Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)
@@ -67,13 +72,8 @@ const  DashboardPage = () => {
       //     ]);
       //   })
       // ]);
-      Promise.all([ vaciarTabla(baseURL, setMessage, 'juegos')
-        .then(() => { 
-          Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)
-            .then(() => { setJuegos([]); })
-          ]);
-        })
-      ]);
+      Promise.all([ vaciarTabla(baseURL, setMessage, 'juegos') ])
+        .then(() => {  setJuegos([]); })
       setEstadoBtnEliminarDatos(false);
     }
   }, [estadoBtnEliminarDatos]);
@@ -90,12 +90,12 @@ const  DashboardPage = () => {
 
   const handleSubmitFiltro = (event) => {
     event.preventDefault();
-    let nombre = event.target.elements.nombres.value;
-    let plataforma = event.target.elements.plataformas.value;
-    let genero = event.target.elements.generos.value;
-    let orden = event.target.elements.ordenamiento.value;
+    let nombre = event.target.elements.nombres.value || '';
+    let plataforma = event.target.elements.plataformas.value || '';
+    let genero = event.target.elements.generos.value || '';
+    let orden = event.target.elements.ordenamiento.value || '';
     // Llamada a la función de filtrarJuegos con los valores del formulario
-    obtenerJuegosFiltados(baseURL, setJuegos, setMessage, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden});
+    obtenerJuegosFiltados(baseURL, setJuegos, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden});
     // Mostrar msg de la api // FIXME: CREAR EL COSO EN EL NAVBAR PARA MOSTRAR EL MSJ
   };
 
@@ -185,11 +185,11 @@ const  DashboardPage = () => {
           <section className="juegos">
             <div className="bloque-juegos">
             {
-              juegos.map(juego => {
+              juegos.map((juego, idx) => {
                 return (
-                  <div className='juego' id={juego.nombre}>
+                  <div className='juego' id={juego.nombre} key={idx}>
                     <div className="header-juego">
-                      <img src={`data:${juego.tipo_imagen};base64,${juego.imagen}`} alt={`Portada del ${juego.nombre}`} loading="lazy" />
+                      <img src={`data:${juego.tipo_imagen};base64,${juego.imagen}`} alt={`Portada de ${juego.nombre}`} loading="lazy" />
                     </div>
                     <div className="contenido-juego">
                       <div className="contenedor-titulo-juego">
