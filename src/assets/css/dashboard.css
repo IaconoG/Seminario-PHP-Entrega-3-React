@@ -115,7 +115,7 @@ input[type="submit"]:hover {
 #root {
   display: grid;
   grid-template-rows: 10vh 1fr 5vh;
-  height: 100vh;
+  height: 100%;
 }
 /* MAIN */
 .main {
