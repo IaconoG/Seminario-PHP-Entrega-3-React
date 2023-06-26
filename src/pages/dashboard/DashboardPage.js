@@ -36,8 +36,6 @@ const  DashboardPage = () => {
       .then(() => { setEstadoAjusteSelects(true); })
     ]);
     obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
-    console.log(juegos);
-
   }, []);
 
   useEffect(() => {
@@ -81,7 +79,7 @@ const  DashboardPage = () => {
   useEffect(() => {
     if (message.length > 0) {
       for (let i = 0; i < message.length; i++) {
-        console.log(message[i]);
+        console.log(message[i]); // FIXME: mostrar display
       }
       setMessage([]);
     } 

@@ -45,7 +45,9 @@ const EditPage = () => {
 
   useEffect(() => {
     if (mensaje.length === 0) return;
-    console.log(mensaje[0]);
+    console.log(mensaje[0]); // FIXME: mostrar display
+    setMessage([]);
+
   }, [mensaje])
 
 

@@ -1,14 +1,8 @@
-/* 
-  Este archivo contiene la función que se encarga de cargar tanto como los generos, platafromas y juegos a la base de datos.
-  Esta carga se realizar con el fin de testear la base de datos con datos ya cargados.
-  La informacion a cargar se encuenta en la api en los archivos json.
-
-*/
 import axios from "axios";
 
-const cargarData = async (baseURL, setMessage, tabla) => {
-  // --- Cargar Generos ---
-  await axios.post(baseURL + '/'+tabla+'/todos')
+const editarOpcion = async (baseURL, setMessage, opcion, dato) => {
+  opcion = opcion.toLowerCase()+'s';
+  await axios.patch(baseURL + '/'+opcion+'/'+dato.id, dato)
     .then(response => {
       setMessage(prevMessage => [...prevMessage, response.status+ ': '+ response.data.mensaje]);
     })
@@ -27,4 +21,4 @@ const cargarData = async (baseURL, setMessage, tabla) => {
     });  
 }
 
-export { cargarData };
+export { editarOpcion };

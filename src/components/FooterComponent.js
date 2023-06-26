@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../assets/css/footer.css'
 
-function FooterComponent() {
+const FooterComponent = () => {
   return (
     <footer>
       <div className="footer-contenido">
