@@ -17,10 +17,8 @@ const vaciarTabla = async (baseURL, setMessage, tabla) => {
       } else if (error.request) {
         // La petición fue hecha pero no se recibió respuesta `error.request` es una instancia de XMLHttpRequest en el navegador y
         // una instancia de http.ClientRequest en node.js
-        console.log(error.message+': La petición fue hecha pero no se recibió respuesta.');
         setMessage(prevMessage => [...prevMessage, error.message+': La petición fue hecha pero no se recibió respuesta.']);
       } else {
-        console.log(error.message);
         setMessage(prevMessage => [...prevMessage, 'Algo paso al preparar la petición que lanzo un Error.']);
       }
     });

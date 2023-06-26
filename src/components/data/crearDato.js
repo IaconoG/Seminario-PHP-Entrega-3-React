@@ -4,7 +4,6 @@ const crearDato = async (baseURL, setMessage, opcion, dato) => {
   opcion = opcion.toLowerCase()+'s';
   await axios.post(baseURL + '/'+opcion, dato)
     .then(response => {
-      console.log(response.data);
       setMessage(prevMessage => [...prevMessage, response.status+ ': '+ response.data.mensaje]);
     })
     .catch(function (error) {
