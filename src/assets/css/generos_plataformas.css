@@ -1,0 +1,126 @@
+
+
+.contenido-opciones {
+  padding: 2.5em 0;
+  background-color: var(--clr-primero-ligth);  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+  margin: auto 0;
+} 
+.contenido-opciones.fix-tamano {
+  max-width: 700px;
+  min-width: 500px;
+  min-height: fit-content;
+  gap: 1rem;
+  padding-block: 5rem;
+}
+
+.contenido h1 {
+  font-size: 5rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: #fff9e1ff;
+}
+
+.contenedor {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 180px);
+  max-width: 90%;
+  height: 100%;
+  gap: 1rem 2rem;
+  align-items: center;
+}
+
+.opcion {
+  max-width: 180px;
+  width: 100%;
+  height: max-content;
+  color: #5f4633ff;
+  background-color: #e3d7bfff;
+  border-radius: var(--default-radius-border);
+  text-align: center;
+  overflow: hidden;
+}
+.opcion .titulo-opcion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85px;
+  text-transform: capitalize;
+  border-radius: 0 0 1rem 1rem;
+  background-color: var(--clr-tercero);
+  padding-top: 1rem;
+}
+.opcion .titulo-opcion h3 {
+  max-width: 170px;
+  overflow: hidden; /* Ocultar el texto desbordado */
+  text-overflow: ellipsis; /* Agregar puntos suspensivos al final del texto desbordado */
+}
+
+.opcion .acciones {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 0.5rem;
+  height: auto;
+}
+
+button {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--default-radius-border);
+  border: 1px solid transparent;
+  background-color: var(--clr-primero);
+  color: #fff9e1ff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+button:hover {
+  transform: scale(1.02);
+}
+.fix-btn {
+  background-color: var(--clr-tercero);
+  color: #5f4633ff;
+}
+
+.form-opciones {
+  width: 65%;
+  height: auto;
+  min-height: 200px;
+  background-color: #e3d7bfff;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+.form-contenido {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+.input-opciones {
+  height: 50px;
+}
+.form-contenido > button {
+  width: 50%;
+  height: 50px;
+  align-self: center;
+  margin-top: auto;
+}
+.form-contenido > label {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #5f4633ff;
+}
+.form-contenido > input {
+  margin-bottom: 3rem;
+}

@@ -7,7 +7,7 @@ header {
   background-color: var(--clr-blanco);
   box-shadow: var(--shadow-suave);
   width: 100%;
-  height: auto;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;

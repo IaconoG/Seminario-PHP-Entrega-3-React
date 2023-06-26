@@ -6,7 +6,7 @@
   --clr-gris: #808080;
   --clr-primero: #7e634e;
   --clr-primero-ligth: #907761;
-  --clr-segndo: #F8F8FF;
+  --clr-segndo: ;
   --clr-tercero: #c7b69f;
 
 
@@ -25,6 +25,10 @@
   --main-radius-border: 2.4rem;
   --inner-radius-border: calc(var(--main-radius-border) - 0.8rem);
 
+  /* Tam;os */
+  --footer-height: 5vh;
+  --header-height: 10vh;
+
 }
 /** === Establecemos una configuracion incial del css === **/
 * {
@@ -41,6 +45,10 @@ html {
 body {
   font-family: var(--ff-primero);
   width: 100%;
+}
+main {
+  min-height: calc(100vh - var(--footer-height) - var(--header-height));
+  max-height: 100%;
 }
 h1 {
   font-family: var(--ff-titulo);
@@ -73,10 +81,11 @@ label[for="imagen"] {
   border-radius: var(--default-radius-border);
   box-shadow: var(--shadow-suave);
   padding: 0.5rem;
+  padding-bottom: 0.25rem;
   font-size: 1.8rem;
   font-family: var(--ff-primero);
   width: 100%;
-  background-color: var(--clr-segndo);
+  background-color: var(--clr-blanco);
   border: 1px solid transparent;
 
 }
@@ -109,7 +118,9 @@ input[type="submit"] {
 input[type="submit"]:hover {
   transform: scale(1.02);
 }
-
+a {
+  width: 100%;
+}
 
 /* BODY */
 #root {
@@ -193,7 +204,7 @@ select option:last-child {
 /* Barra de desplazamiento */
 select::-webkit-scrollbar { /* Para el track (barra de desplazamiento) */
   width: 8px; 
-  background-color: var(--clr-segndo); 
+  background-color: var(--clr-blanco); 
 }
 
 select::-webkit-scrollbar-thumb { /* Para el thumb (el coso de la barra de desplazamiento) */
@@ -235,7 +246,7 @@ select::-webkit-scrollbar-thumb:active {
   justify-self: center;
   border-radius: 1rem;
   box-shadow: var(--shadow-default);
-  background-color: var(--clr-segndo);
+  background-color: var(--clr-blanco);
 }
 .juego .header-juego {
   min-height: 200px;
