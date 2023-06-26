@@ -28,11 +28,8 @@ https://coolors.co/553d2a-5f4633-69503c-735945-7e634e-907761-ab9680-c7b69f-e3d7b
 
 
 
+##TODO
 
-tambiaen realizar un recuadro comoo cargar datos para mostrar los mensjaes de la api
-mejor ponerlo en el centro del haeder que las palabras se muevan para la izqueierda si no se ve todo
-como si fuera una pantalla 
+Craer un panel que se muestre en pantalla con los mensjaes de la api
 
-no puedo obtener los mensajes de errores de la api, primero me muestra los mensajes de error de Axios
-
-Al usar la accion Cargar data el primer mensaje lo muestra vacio y luego si muestra el mensjae correspondiente
+Al usar la accion Cargar data el primer mensaje lo muestra vacio y luego si muestra el mensjae correspondiente, esto con los useEffect
