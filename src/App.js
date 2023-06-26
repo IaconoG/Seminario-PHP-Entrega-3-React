@@ -12,10 +12,9 @@ import Plataformas from './pages/plataformas/PlataformasPage';
 import NoPage from './pages/NoPage';
 
 // Importacion de acciones en paginas
-import EditGenero from './pages/generos/EditPage';
-import EditPlataforma from './pages/plataformas/EditPage';
-import NewGenero from './pages/generos/NewPage';
-import NewPlataforma from './pages/plataformas/NewPage';
+import EditOpcion from './pages/EditPage';
+import NewOpcion from './pages/NewPage';
+
 
 
 
@@ -24,12 +23,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Dashboard />} />
-        {/* <Route exact path="/generos" element={<Generos />} />
+        <Route exact path="/generos" element={<Generos />} />
+        <Route exact path="/generos/new" element={<NewOpcion />} />
+        <Route exact path="/generos/edit/:alias" element={<EditOpcion />} />
         <Route exact path="/plataformas" element={<Plataformas />} />
-        <Route exact path="/generos/edit/:id" element={<EditGenero />} />
-        <Route exact path="/plataformas/edit/:id" element={<EditPlataforma />} />
-        <Route exact path="/generos/new" element={<NewGenero />} />
-        <Route exact path="/plataformas/new" element={<NewPlataforma />} /> */}
+        <Route exact path="/plataformas/edit/:alias" element={<EditOpcion />} />
+        <Route exact path="/plataformas/new" element={<NewOpcion />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
