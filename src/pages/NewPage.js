@@ -1,11 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-  // useLocation -> Hook que devuelve el objeto que contiene información sobre la dirección URL actual.
-    // hash -> el anchor (el #) en la URL.
-    // pathname -> la ruta de la URL.
-    // search -> la cadena de consulta de la URL.
-    // state -> el estado de la ubicación.
-    // key -> la clave de la ubicación. Útil para comparar dos ubicaciones en el historial del usuario.
 
 // Components
 import Header from '../components/HeaderComponent';
@@ -16,13 +9,13 @@ import { crearDato } from '../components/data/crearDato';
 
 const EditPage = () => {
   const baseURL = 'http://localhost:8000/public';
-  const location = useLocation();
-  const { accion, opcion } = location.state;
   const [mensaje, setMessage] = useState([]);
-
+  const accion = sessionStorage.getItem('accion');
+  let opcion = sessionStorage.getItem('opcion');
   const placeholder = (opcion === 'Genero') ? 'Accion' : 'PlayStation 5';
+  const [count, setCount] = useState(0);
 
-  const handleChange = (e) => {
+  const handleButton = (e) => {
     e.preventDefault(); // Evita que se recargue la pagina
     const form = document.getElementById('form-editar');
     const input = form.nombre;
@@ -43,29 +36,41 @@ const EditPage = () => {
     }, 2500);
   }
 
+  const openModal = (msj) => {
+    setTimeout(() => {
+      const modal = document.querySelector('.modal');
+      modal.style.display = 'block';
+      modal.querySelector('h2').textContent = msj;
+    }, 250);
+	}
+	const closeModal = () => {
+		const modal = document.querySelector('.modal');
+		modal.style.display = 'none';
+    opcion = opcion.toLocaleLowerCase()+ 's';
+	}
+
   useEffect(() => {
     if (mensaje.length === 0) return;
-    console.log(mensaje[0]); // FIXME: mostrar display
+    setTimeout(() => {
+      // openModal(mensaje[0]);
+    }, 2200);
+    console.log(mensaje[0] + ' ' + count); // FIXME: Utilizar el modal
+    setCount(count + 1);
     setMessage([]);
   }, [mensaje])
-
 
   return (
     <>
       <Header />
-      <Formulario list={{handleChange, accion: accion, opcion: opcion, placeholder: placeholder, defaultValue: ''}} />
-      {/* <main className='main'>
-        <div className="contenido contenido-opciones fix-tamano">
-          <h1>{accion} {opcion}</h1>
-          <form id="form-editar" className="form-opciones" onSubmit={handleChange}> 
-            <div className="form-contenido">
-              <label htmlFor="nombre">Nombre</label>
-              <input className="input-opciones" id="nombre" name="nombre" placeholder={placeholder}/>
-              <button className="fix-btn" >{accion}</button>
-            </div>
-          </form>
-        </div>
-      </main> */}
+      <div className="modal">
+				<div className='contenido-modal'>
+					<h2>Cargando...</h2>
+					<div className='btns-modal'>
+						<button onClick={() => closeModal()}>Cerrar</button>
+					</div>
+				</div>
+			</div>
+      <Formulario list={{handleButton, accion: accion, opcion: opcion, placeholder: placeholder, defaultValue: ''}} />
       <Footer />
     </>
   );

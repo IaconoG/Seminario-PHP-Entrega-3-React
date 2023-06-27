@@ -21,24 +21,24 @@
   font-size: 5rem;
   font-weight: 700;
   text-transform: capitalize;
-  color: #fff9e1ff;
+  color: var(--clr-sexto);
 }
 
 .contenedor {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 180px);
+  grid-template-columns: repeat(auto-fill, 220px);
   max-width: 90%;
   height: 100%;
-  gap: 1rem 2rem;
+  gap: 2rem;
   align-items: center;
 }
 
 .opcion {
-  max-width: 180px;
+  max-width: 220px;
   width: 100%;
   height: max-content;
-  color: #5f4633ff;
-  background-color: #e3d7bfff;
+  color: var(--clr-cuarto);
+  background-color: var(--clr-quinto);
   border-radius: var(--default-radius-border);
   text-align: center;
   overflow: hidden;
@@ -54,7 +54,7 @@
   padding-top: 1rem;
 }
 .opcion .titulo-opcion h3 {
-  max-width: 170px;
+  max-width: 210px;
   overflow: hidden; /* Ocultar el texto desbordado */
   text-overflow: ellipsis; /* Agregar puntos suspensivos al final del texto desbordado */
 }
@@ -75,7 +75,7 @@ button {
   border-radius: var(--default-radius-border);
   border: 1px solid transparent;
   background-color: var(--clr-primero);
-  color: #fff9e1ff;
+  color: var(--clr-sexto);
   font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
@@ -87,14 +87,14 @@ button:hover {
 }
 .fix-btn {
   background-color: var(--clr-tercero);
-  color: #5f4633ff;
+  color: var(--clr-cuarto);
 }
 
 .form-opciones {
   width: 65%;
   height: auto;
   min-height: 200px;
-  background-color: #e3d7bfff;
+  background-color: var(--clr-quinto);
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -119,7 +119,7 @@ button:hover {
 .form-contenido > label {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #5f4633ff;
+  color: var(--clr-cuarto);
 }
 .form-contenido > input {
   margin-bottom: 3rem;

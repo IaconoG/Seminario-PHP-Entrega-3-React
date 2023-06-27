@@ -4,11 +4,14 @@
   --clr-blanco: #F8F8FF;
   --clr-negro: #333;
   --clr-gris: #808080;
+  --clr-gris-suave: #D3D3D3;
   --clr-primero: #7e634e;
   --clr-primero-ligth: #907761;
   --clr-segndo: ;
   --clr-tercero: #c7b69f;
-
+  --clr-cuarto: #5f4633ff;
+  --clr-quinto: #e3d7bfff;
+  --clr-sexto: #fff9e1ff;
 
   /* Fonts */
   --ff-primero: 'Overpass', sans-serif;
@@ -194,7 +197,7 @@ a {
 }
 
 select option{
-  border-bottom: 1px solid #D3D3D3;
+  border-bottom: 1px solid var(--clr-gris-suave);
   padding-inline: 0.5rem;
   padding-block: 5px;
 }

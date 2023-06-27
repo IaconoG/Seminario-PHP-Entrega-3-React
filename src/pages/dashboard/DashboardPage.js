@@ -62,14 +62,6 @@ const  DashboardPage = () => {
 
   useEffect (() => {
     if (estadoBtnEliminarDatos) {
-      // FIXME: Esto es para la pagina de plataformas y generos aca no deberiamos utilizarlo
-      // Promise.all([ vaciarTabla(baseURL, setMessage, 'plataformas'), vaciarTabla(baseURL, setMessage, 'generos')
-      //   .then(() => { 
-      //     Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)
-      //       .then(() => { setEstadoAjusteSelects(true); })
-      //     ]);
-      //   })
-      // ]);
       Promise.all([ vaciarTabla(baseURL, setMessage, 'juegos') ])
         .then(() => {  setJuegos([]); })
       setEstadoBtnEliminarDatos(false);
