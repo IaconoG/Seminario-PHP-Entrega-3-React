@@ -4,7 +4,7 @@ const crearDato = async (baseURL, setMessage, opcion, dato) => {
   opcion = opcion.toLowerCase()+'s';
   await axios.post(baseURL + '/'+opcion, dato)
     .then(response => {
-      setMessage(prevMessage => [...prevMessage, response.status+ ': '+ response.data.mensaje]);
+      setMessage(prevMessage => [...prevMessage, response.status+ ': '+ response.data.mensaje?.replace('Dato', 'El dato '+dato.nombre)]);
     })
     .catch(function (error) {
       if (error.response) {

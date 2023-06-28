@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Components
 import Header from '../components/HeaderComponent';
@@ -9,11 +10,12 @@ import { crearDato } from '../components/data/crearDato';
 
 const EditPage = () => {
   const baseURL = 'http://localhost:8000/public';
+  const navigate = useNavigate();
   const [mensaje, setMessage] = useState([]);
+  const [volver, setVolver] = useState(false);
   const accion = sessionStorage.getItem('accion');
   let opcion = sessionStorage.getItem('opcion');
   const placeholder = (opcion === 'Genero') ? 'Accion' : 'PlayStation 5';
-  const [count, setCount] = useState(0);
 
   const handleButton = (e) => {
     e.preventDefault(); // Evita que se recargue la pagina
@@ -28,6 +30,7 @@ const EditPage = () => {
     } else {
       let dato = { nombre: nombre };
       input.style.borderColor = borderColor.bien;
+      setVolver(true);
       crearDato(baseURL, setMessage, opcion, dato);
     }
     // Restablecer los colores después de 2.5 segundos
@@ -46,16 +49,12 @@ const EditPage = () => {
 	const closeModal = () => {
 		const modal = document.querySelector('.modal');
 		modal.style.display = 'none';
-    opcion = opcion.toLocaleLowerCase()+ 's';
+    if (volver) navigate('/' + opcion.toLocaleLowerCase()+ 's');
 	}
 
   useEffect(() => {
     if (mensaje.length === 0) return;
-    setTimeout(() => {
-      // openModal(mensaje[0]);
-    }, 2200);
-    console.log(mensaje[0] + ' ' + count); // FIXME: Utilizar el modal
-    setCount(count + 1);
+    openModal(mensaje[0]);
     setMessage([]);
   }, [mensaje])
 

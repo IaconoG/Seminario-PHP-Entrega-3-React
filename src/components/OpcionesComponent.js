@@ -20,6 +20,19 @@ const OpcionesComponent = (props) => {
 		if (opcion === 'Genero') obtenerGeneros(baseURL, setDatos)
     else obtenerPlataformas(baseURL, setDatos)
 	}, []);
+
+	useEffect(() => {
+		if (!sessionStorage.getItem('id')) return;
+		const target = document.getElementById(sessionStorage.getItem('id'));
+		if (!target) return; 
+		target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+		target.classList.add('enfoque');
+		setTimeout(() => {
+			target.classList.remove('enfoque');
+		}, 3000);
+		sessionStorage.removeItem('id');
+	}, [datos]);
+
 	
 	const openModal = (dato, msj) => {
 		setDatoSeleccionado(dato);
@@ -84,12 +97,12 @@ const OpcionesComponent = (props) => {
 				</div>
 				<div className='contenedor'>
 					{
-						datos.map((dato, id) => {
-							let alias  = dato.nombre.toLowerCase().replace(/ /g, "-");
+						datos.map((dato, idx) => {
+							let alias  = dato.nombre.toLowerCase()?.replace(/ /g, "-");
 								// .reaplace -> reemplaza un caracter por otro 
       						// / /g -> busca todos los espacios en blanco
 							return (
-								<div id={id} className="opcion" key={id}>
+								<div id={dato.id} className="opcion" key={idx}>
 									<div className='titulo-opcion'>
 										<h3>{dato.nombre}</h3>
 									</div>

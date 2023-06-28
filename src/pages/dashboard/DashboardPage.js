@@ -25,58 +25,20 @@ const  DashboardPage = () => {
   const [generos, setGeneros] = useState([]);
   const [plataformas, setPlataformas] = useState([]);
   const [nombres, setNombres] = useState([]);
-  const [message, setMessage] = useState([]);
-  const [estadoBtnCargaDatos, setEstadoBtnCargaDatos] = useState(false);
-  const [estadoBtnEliminarDatos, setEstadoBtnEliminarDatos] = useState(false);
-  const [estadoAjusteSelects, setEstadoAjusteSelects] = useState(false);
+  const [message, setMessage] = useState('');
+  let contenedorMensajes = []
 
   useEffect(() => {
     obtenerNombres(baseURL, setNombres);
-    Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)
-      .then(() => { setEstadoAjusteSelects(true); })
-    ]);
-    obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
+    obtenerGeneros(baseURL, setGeneros);
+    obtenerPlataformas(baseURL, setPlataformas);
+    obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'}, () => {});
   }, []);
 
   useEffect(() => {
-    if (estadoAjusteSelects) {
-      ajustarSelects();
-      setEstadoAjusteSelects(false);
-    }
-  }, [estadoAjusteSelects]);
+    ajustarSelects();
+  }, [generos, plataformas]);
 
-  useEffect(() => {
-    if (estadoBtnCargaDatos) {
-      Promise.all([ cargarData(baseURL, setMessage, 'generos'), cargarData(baseURL, setMessage, 'plataformas')])
-        .then (() => {
-          Promise.all([ cargarData(baseURL, setMessage, 'juegos')])
-            .then(() => { 
-              obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'});
-            });
-          Promise.all([ obtenerGeneros(baseURL, setGeneros),  obtenerPlataformas(baseURL, setPlataformas)])
-            .then(() => { setEstadoAjusteSelects(true); })
-        })
-      setEstadoBtnCargaDatos(false);
-    }
-  }, [estadoBtnCargaDatos]); 
-
-  useEffect (() => {
-    if (estadoBtnEliminarDatos) {
-      Promise.all([ vaciarTabla(baseURL, setMessage, 'juegos') ])
-        .then(() => {  setJuegos([]); })
-      setEstadoBtnEliminarDatos(false);
-    }
-  }, [estadoBtnEliminarDatos]);
-
-  useEffect(() => {
-    if (message.length > 0) {
-      for (let i = 0; i < message.length; i++) {
-        console.log(message[i]); // FIXME: mostrar display
-      }
-      setMessage([]);
-    } 
-  }, [message]);
-  
 
   const handleSubmitFiltro = (event) => {
     event.preventDefault();
@@ -85,27 +47,70 @@ const  DashboardPage = () => {
     let genero = event.target.elements.generos.value || '';
     let orden = event.target.elements.ordenamiento.value || '';
     // Llamada a la función de filtrarJuegos con los valores del formulario
-    obtenerJuegosFiltados(baseURL, setJuegos, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden});
-    // Mostrar msg de la api // FIXME: CREAR EL COSO EN EL NAVBAR PARA MOSTRAR EL MSJ
+    obtenerJuegosFiltados(baseURL, setJuegos, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden}, setMessage);
   };
 
   // === Cargar datos a la BD ===
   const handleCargarDatos = () => {
-    setEstadoBtnCargaDatos(true);
+    Promise.all([ cargarData(baseURL, contenedorMensajes, 'generos'), cargarData(baseURL, contenedorMensajes, 'plataformas')])
+      .then (() => {
+        Promise.all([ cargarData(baseURL, contenedorMensajes, 'juegos')])
+          .then(() => { 
+            obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'}, () => {});
+            let msj = '';
+            contenedorMensajes.forEach(e => { msj += e + '\n'; });
+            setMessage(msj);
+            contenedorMensajes = [];
+          });
+        obtenerGeneros(baseURL, setGeneros);
+        obtenerPlataformas(baseURL, setPlataformas);
+      })
   }
   // === Eliminar juegos de la BD ===
-  const handleElimnarJuegos = () => {
-    setEstadoBtnEliminarDatos(true);
+  const handleElimnarDatos = () => {
+    Promise.all([ vaciarTabla(baseURL, contenedorMensajes, 'juegos'), vaciarTabla(baseURL, contenedorMensajes, 'generos'), vaciarTabla(baseURL, contenedorMensajes, 'plataformas') ])
+      .then(() => {
+          setJuegos([]);
+          setGeneros([]);
+          setPlataformas([]);
+          let msj = '';
+          contenedorMensajes.forEach(e => { msj += e + '\n'; });
+          setMessage(msj);
+          contenedorMensajes = [];
+      })
   }
 
+  const openModal = (msj) => {
+		const modal = document.querySelector('.modal');
+		modal.style.display = 'block';
+		modal.querySelector('h2').textContent = msj;
+	}
+	const closeModal = () => {
+		const modal = document.querySelector('.modal');
+		modal.style.display = 'none';
+	}
+
+  useEffect(() => {
+    if (message === '') return;
+    openModal(message);
+    setMessage('');
+  }, [message])
 
   return (
     <>
       <Header />
       {/*Cuerpo de la pagina*/}
       <main className="main">
+        <div className="modal">
+          <div className='contenido-modal'>
+            <h2>Cargando...</h2>
+            <div className='btns-modal'>
+              <button onClick={() => closeModal()}>Cerrar</button>
+            </div>
+          </div>
+        </div>
         <div className="contenido">
-          {/*  Seccion que contiene los filtors del contenido */}
+          {/*  Seccion que contiene el aside */}
           <aside className="filtros">
             <h3>Filtros</h3>
             <form id="form-filtro" className="from-filtros" onSubmit={handleSubmitFiltro}> 
@@ -166,8 +171,8 @@ const  DashboardPage = () => {
 
             <div className='contenedor-cargar-datos'>
               <h3>Acciones</h3>
-              <input type="submit" value="Cargar Data" onClick={handleCargarDatos}></input>
-              <input type="submit" value="Eliminar Juegos" onClick={handleElimnarJuegos}></input>
+              <button value="Cargar Data" onClick={() => handleCargarDatos()}>Cargar Data</button>
+              <button value="Eliminar Data" onClick={() => handleElimnarDatos()}>Eliminar Data</button>
             </div>
 
           </aside>

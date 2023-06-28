@@ -5,7 +5,7 @@ const eliminarDato = async (baseURL, setMessage, opcion, dato) => {
   
   await axios.delete(baseURL + '/'+opcion+'s/'+dato.id)
   .then(response => {
-      let mensaje = (opcion === 'genero') ? response.data.mensaje.replace('dato', opcion+' "'+dato.nombre+'"') : response.data.mensaje.replace('El dato', 'La '+opcion+' '+dato.nombre);
+      let mensaje = (opcion === 'genero') ? response.data.mensaje?.replace('dato', opcion+' "'+dato.nombre+'"') : response.data.mensaje?.replace('El dato', 'La '+opcion+' '+dato.nombre);
       setMessage(prevMessage => [...prevMessage, response.status+ ': '+ mensaje]);
     })
     .catch(function (error) {

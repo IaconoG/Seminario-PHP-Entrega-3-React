@@ -12,7 +12,6 @@ import { editarOpcion } from '../components/data/editarDato';
 const EditPage = () => {
   const baseURL = 'http://localhost:8000/public';
   const dato = JSON.parse(sessionStorage.getItem('dato'));
-
   const accion = sessionStorage.getItem('accion');
   let opcion = sessionStorage.getItem('opcion');
   const navigate = useNavigate();
@@ -52,8 +51,13 @@ const EditPage = () => {
 	const closeModal = () => {
 		const modal = document.querySelector('.modal');
 		modal.style.display = 'none';
-    opcion = opcion.toLocaleLowerCase()+ 's';
-    if (volver) navigate('/' + opcion);
+    if (volver) {
+      sessionStorage.setItem('id', dato.id);
+      sessionStorage.removeItem('dato');
+      sessionStorage.removeItem('accion');
+      sessionStorage.removeItem('opcion');
+      navigate('/' + opcion.toLocaleLowerCase()+ 's')
+    }
 	}
 
   useEffect(() => {
