@@ -6,7 +6,6 @@ https://www.w3schools.com/react/react_router.asp
 ### `Axios`
 https://www.freecodecamp.org/espanol/news/como-usar-axios-con-react/
 
-
 ### `Axios Docs`
 https://axios-http.com/es/docs/intro
 
@@ -27,10 +26,4 @@ https://coolors.co/553d2a-5f4633-69503c-735945-7e634e-907761-ab9680-c7b69f-e3d7b
 --cornsilk: #fff9e1ff;
 
 
-
 ## TODO
-
-- Finalizar el newpage, agregar el modal y ver como funciona
-- Agregar el modal en la dashboard
-
-- En cargarData, creaDato, vaciarTabla, modificar los mentsajes de exito Para que muestren segun el dato que se esta modificando
