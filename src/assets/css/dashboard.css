@@ -190,10 +190,13 @@ a {
   background-color: var(--clr-primero-ligth);
   color: white;
 }
-.contenedor-cargar-datos > input {
+.contenedor-cargar-datos > button {
+  width: 95%;
   background-color: var(--clr-tercero);
+  border-radius: 2rem;
+  cursor: pointer;
   color: var(--clr-negro);
-  letter-spacing: 0.03rem;
+  box-shadow: var(--shadow-suave);
 }
 
 select option{
@@ -225,10 +228,9 @@ select::-webkit-scrollbar-thumb:active {
 .juegos {
   width: 100%;
   background-color: var(--clr-primero);
-  padding: 2rem 5rem;
+  padding: 5rem 5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem 0;
 }
 .bloque-juegos {
   display: grid;
@@ -237,7 +239,7 @@ select::-webkit-scrollbar-thumb:active {
     /* auto-fit -> crea tantas columas como sea posible para llenar el espacio disponible */
     /* minmax(min, max) -> Especifica el tama;o minimo y maximo de cada columna */
     /* 1fr -> 1 fraccion de espacio, la columna puede crecer para ocupar el espacio disponible si hay */
-  gap: 5rem 5rem;
+  gap: 4rem;
   justify-content: space-around;
 }
 

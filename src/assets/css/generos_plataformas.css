@@ -124,3 +124,19 @@ button:hover {
 .form-contenido > input {
   margin-bottom: 3rem;
 }
+
+.enfoque {
+  animation: animacion 2s forwards;
+}
+@keyframes animacion {
+  0% {
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+
+}
