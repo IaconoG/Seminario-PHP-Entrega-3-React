@@ -1,0 +1,28 @@
+
+.main-mensaje {
+  display: flex;
+  justify-content: center;
+}
+.contenedor-mensaje {
+  width: fit-content;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  color: var(--clr-primero);
+  text-align: center;
+}
+.contenedor-mensaje h1 {
+  font-size: 15rem;
+}
+.contenedor-mensaje h2 {
+  font-size: 4rem;
+}
+.contenedor-mensaje i, .contenedor-mensaje img, .contenedor-mensaje {
+  padding-top: 2rem;
+}
+.contenedor-mensaje i {  
+  font-size: 1.5rem;
+  color: var(--clr-gris);  
+}
