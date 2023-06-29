@@ -43,8 +43,8 @@ const  DashboardPage = () => {
   const handleSubmitFiltro = (event) => {
     event.preventDefault();
     let nombre = event.target.elements.nombres.value || '';
-    let plataforma = event.target.elements.plataformas.value || '';
-    let genero = event.target.elements.generos.value || '';
+    let plataforma = event.target.elements.plataformas.value || ''; // Debe ser or null
+    let genero = event.target.elements.generos.value || ''; // Debe ser or null
     let orden = event.target.elements.ordenamiento.value || '';
     // Llamada a la función de filtrarJuegos con los valores del formulario
     obtenerJuegosFiltados(baseURL, setJuegos, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden}, setMessage);
