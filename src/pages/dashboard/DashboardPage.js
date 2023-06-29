@@ -117,7 +117,7 @@ const  DashboardPage = () => {
               {/* Filtro por nombre */}
               <div className="bloque-filtro-nombre">
                 <label htmlFor="nombres" className="titulo-filtro">Por nombre</label>
-                <input id="nombres" name="nombres" list="listado-nombres" />
+                <input id="nombres" name="nombres" list="listado-nombres" placeholder= "Hellblade: Senua's Sacrifice"/>
                 <datalist id="listado-nombres">
                   {
                     nombres.map((nombre, idx) => {
@@ -134,9 +134,9 @@ const  DashboardPage = () => {
                 <select name="generos" id="generos" title="listado-generos">
                   <option value="">Ninguna selección</option>
                   {
-                    generos.map(genero => {
+                    generos.map((genero, idx) => {
                       return (
-                        <option key={genero.id} value={genero.id}>{genero.nombre}</option>
+                        <option key={idx} value={genero}>{genero.nombre}</option>
                       );
                     })
                     
@@ -149,9 +149,9 @@ const  DashboardPage = () => {
                 <select name="plataformas" id="plataformas" title="listado-plataformas">
                   <option value="">Ninguna selección</option>
                   {
-                    plataformas.map(plataforma => {
+                    plataformas.map((plataforma, idx) => {
                       return (
-                        <option key={plataforma.id} value={plataforma.id}>{plataforma.nombre}</option>
+                        <option key={idx} value={plataforma}>{plataforma.nombre}</option>
                       );
                     })
                     
