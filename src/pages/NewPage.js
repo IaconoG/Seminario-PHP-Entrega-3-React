@@ -11,7 +11,7 @@ import { crearDato } from '../components/data/crearDato';
 const EditPage = () => {
   const baseURL = 'http://localhost:8000/public';
   const navigate = useNavigate();
-  const [mensaje, setMessage] = useState([]);
+  const [message, setMessage] = useState('');
   const [volver, setVolver] = useState(false);
   const accion = sessionStorage.getItem('accion');
   let opcion = sessionStorage.getItem('opcion');
@@ -53,10 +53,10 @@ const EditPage = () => {
 	}
 
   useEffect(() => {
-    if (mensaje.length === 0) return;
-    openModal(mensaje[0]);
-    setMessage([]);
-  }, [mensaje])
+    if (message === '') return;
+    openModal(message);
+    setMessage('');
+  }, [message])
 
   return (
     <>

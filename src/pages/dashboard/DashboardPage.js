@@ -68,11 +68,12 @@ const  DashboardPage = () => {
   }
   // === Eliminar juegos de la BD ===
   const handleElimnarDatos = () => {
-    Promise.all([ vaciarTabla(baseURL, contenedorMensajes, 'juegos'), vaciarTabla(baseURL, contenedorMensajes, 'generos'), vaciarTabla(baseURL, contenedorMensajes, 'plataformas') ])
+    Promise.all([ 
+      vaciarTabla(baseURL, contenedorMensajes, 'juegos', setJuegos, setGeneros, setPlataformas, setNombres),
+      vaciarTabla(baseURL, contenedorMensajes, 'generos', setJuegos, setGeneros, setPlataformas, setNombres),
+      vaciarTabla(baseURL, contenedorMensajes, 'plataformas', setJuegos, setGeneros, setPlataformas, setNombres)
+    ])
       .then(() => {
-          setJuegos([]);
-          setGeneros([]);
-          setPlataformas([]);
           let msj = '';
           contenedorMensajes.forEach(e => { msj += e + '\n'; });
           setMessage(msj);

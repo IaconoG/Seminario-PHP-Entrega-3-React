@@ -17,7 +17,7 @@ const EditPage = () => {
   const navigate = useNavigate();
   const [volver, setVolver] = useState(false);
   
-  const [mensaje, setMessage] = useState([]);
+  const [message, setMessage] = useState('');
 
   const handleButton = (e) => {
     e.preventDefault(); // Evita que se recargue la pagina
@@ -61,10 +61,10 @@ const EditPage = () => {
 	}
 
   useEffect(() => {
-    if (mensaje.length === 0) return;
-    openModal(mensaje[0]);
-    setMessage([]);
-  }, [mensaje])
+    if (message === '') return;
+    openModal(message);
+    setMessage('');
+  }, [message])
 
 
   return (

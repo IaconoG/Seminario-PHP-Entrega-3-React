@@ -1,5 +1,5 @@
 /* 
-  Este archivo contiene la función que se encarga de obtener los géneros de la api
+  Este archivo contiene la función que se encarga de obtener los géneros de la api al comienzo de la aplicación
 */
 import axios from 'axios';
 

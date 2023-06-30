@@ -1,5 +1,5 @@
 /*
-  Este archivo se encarga de obtener los nombres de los juegos de la API
+  Este archivo se encarga de obtener los nombres de los juegos de la API al comienzo de la aplicación
 */
 import axios from 'axios';
 

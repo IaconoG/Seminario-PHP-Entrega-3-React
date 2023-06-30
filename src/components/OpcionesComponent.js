@@ -12,9 +12,10 @@ import '../assets/css/modal.css';
 const OpcionesComponent = (props) => {
 	const baseURL = 'http://localhost:8000/public';
 	const { opcion } = props.info;
-	const [mensaje, setMessage] = useState([]);
+	const [message, setMessage] = useState('');
 	const [datos, setDatos] = useState([]);
 	const [datoSeleccionado, setDatoSeleccionado] = useState(null);
+	const [success, setSuccess] = useState(false);
 	
 	useEffect(() => {
 		if (opcion === 'Genero') obtenerGeneros(baseURL, setDatos)
@@ -22,7 +23,7 @@ const OpcionesComponent = (props) => {
 	}, []);
 
 	useEffect(() => {
-		if (!sessionStorage.getItem('id')) return;
+		if (!sessionStorage.getItem('id') || !success) return;
 		const target = document.getElementById(sessionStorage.getItem('id'));
 		if (!target) return; 
 		target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
@@ -52,13 +53,16 @@ const OpcionesComponent = (props) => {
 		btns[0].style.display = 'block';
 		btns[1].textContent = 'Aceptar';
 	}
-	
+	useEffect(() => {
+		if (!success) return;
+		setDatos(datos.filter((d) => d.id !== datoSeleccionado.id)); // No se realiza la consulta a la base de datos para actualizar la lista :D
+		closeModal();
+		setSuccess(false);
+	}, [success]);
+
+
 	const handleEliminar = () => {
-		Promise.all([eliminarDato(baseURL, setMessage, opcion, datoSeleccionado)])
-		.then(() => {
-			setDatos(datos.filter((d) => d.id !== datoSeleccionado.id)); // No se realiza la consulta a la base de datos para actualizar la lista :D
-			closeModal();
-		})
+		eliminarDato(baseURL, setMessage, opcion, datoSeleccionado, setSuccess);
 	}
 	const handleEditarClick = (dato) => {
 		sessionStorage.setItem('dato', JSON.stringify(dato));
@@ -70,12 +74,11 @@ const OpcionesComponent = (props) => {
 		sessionStorage.setItem('opcion', opcion);
 	}
 
-
 	useEffect(() => {
-    if (mensaje.length === 0) return;
-    openModal(null, mensaje[0]);
-    setMessage([]);
-  }, [mensaje])
+    if (message === '') return;
+    openModal(null, message);
+    setMessage('');
+  }, [message])
 
   return (
     <main className='main'>
