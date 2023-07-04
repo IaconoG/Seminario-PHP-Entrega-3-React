@@ -15,7 +15,9 @@ const OpcionesComponent = (props) => {
 	const [message, setMessage] = useState('');
 	const [datos, setDatos] = useState([]);
 	const [datoSeleccionado, setDatoSeleccionado] = useState(null);
-	const [success, setSuccess] = useState(false);
+	const [successElimnar, setsuccessElimnar] = useState(false);
+	const [showModal, setShowModal] = useState(false);
+	const [showBtnEliminar, setShowBtnEliminar] = useState(true);
 	
 	useEffect(() => {
 		if (opcion === 'Genero') obtenerGeneros(baseURL, setDatos)
@@ -23,85 +25,57 @@ const OpcionesComponent = (props) => {
 	}, []);
 
 	useEffect(() => {
-		if (!sessionStorage.getItem('id') || !success) return;
-		const target = document.getElementById(sessionStorage.getItem('id'));
-		if (!target) return; 
-		target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-		target.classList.add('enfoque');
-		setTimeout(() => {
-			target.classList.remove('enfoque');
-		}, 3000);
-		sessionStorage.removeItem('id');
-	}, [datos]);
-
-	
-	const openModal = (dato, msj) => {
-		setDatoSeleccionado(dato);
-		const modal = document.querySelector('.modal');
-		modal.style.display = 'block';
-		modal.querySelector('h2').textContent = msj;
-		if (dato === null) {
-			let btns = modal.querySelectorAll('button');
-			btns[0].style.display = 'none';
-			btns[1].textContent = 'Cerrar';
-		}
-	}
-	const closeModal = () => {
-		const modal = document.querySelector('.modal');
-		modal.style.display = 'none';
-		let btns = modal.querySelectorAll('button');
-		btns[0].style.display = 'block';
-		btns[1].textContent = 'Aceptar';
-	}
-	useEffect(() => {
-		if (!success) return;
+		if (!successElimnar) return;
 		setDatos(datos.filter((d) => d.id !== datoSeleccionado.id)); // No se realiza la consulta a la base de datos para actualizar la lista :D
-		closeModal();
-		setSuccess(false);
-	}, [success]);
-
+	}, [successElimnar]);
 
 	const handleEliminar = () => {
-		eliminarDato(baseURL, setMessage, opcion, datoSeleccionado, setSuccess);
-	}
-	const handleEditarClick = (dato) => {
-		sessionStorage.setItem('dato', JSON.stringify(dato));
-		sessionStorage.setItem('accion', 'Editar');
-		sessionStorage.setItem('opcion', opcion);
-	}
-	const handelCrearClick = () => {
-		sessionStorage.setItem('accion', 'Crear');
-		sessionStorage.setItem('opcion', opcion);
+		setShowBtnEliminar(false);
+		eliminarDato(baseURL, setMessage, opcion, datoSeleccionado, setsuccessElimnar)
 	}
 
 	useEffect(() => {
+		if (datoSeleccionado === null) return;
+		setMessage(`¿Estás seguro de eliminar el ${opcion.toLowerCase()} "${datoSeleccionado.nombre}"?`);
+	}, [datoSeleccionado]);
+
+	const closeModal = () => {
+    setShowModal(false);
+		setMessage('');
+		setDatoSeleccionado(null);
+		setsuccessElimnar(false);
+		setShowBtnEliminar(true);
+	}
+	useEffect(() => {
     if (message === '') return;
-    openModal(null, message);
-    setMessage('');
+    setShowModal(true);
   }, [message])
 
   return (
     <main className='main'>
-			<div className="modal">
-				<div className='contenido-modal'>
-					<h2>Cargando...</h2>
-					<div className='btns-modal'>
-						<button onClick={() => handleEliminar()}>Aceptar</button>
-						<button onClick={() => closeModal()}>Cancelar</button>
-					</div>
-				</div>
-			</div>
+			{showModal && (
+				<div className="modal">
+            <div className='contenido-modal'>
+              <h2>{message}</h2>
+              <div className='btns-modal'>
+								{showBtnEliminar && (<button onClick={() => handleEliminar()}>Aceptar</button>)}
+                <button onClick={() => closeModal()}>Cerrar</button>
+              </div>
+            </div>
+          </div>
+          )
+        }
 			<div className="contenido contenido-opciones">
 				<div>
 					<h1>{opcion+'s'}</h1>
-					<Link to={`/${opcion.toLowerCase()}s/new`}>
-						<button className='fix-btn' onClick={handelCrearClick}>Crear {opcion}</button>
+					<Link to={`/${opcion.toLowerCase()}s/new`} state={ {accion: 'crear', opcion} }>
+						<button className='fix-btn'>Crear {opcion}</button>
 					</Link>
 				</div>
 				<div className='contenedor'>
 					{
 						datos.map((dato, idx) => {
-							let alias  = dato.nombre.toLowerCase()?.replace(/ /g, "-");
+							let path  = "edit/"+dato.nombre.toLowerCase()?.replace(/ /g, "-");
 								// .reaplace -> reemplaza un caracter por otro 
       						// / /g -> busca todos los espacios en blanco
 							return (
@@ -110,10 +84,10 @@ const OpcionesComponent = (props) => {
 										<h3>{dato.nombre}</h3>
 									</div>
 									<div className='acciones'>
-										<Link to={`edit/${alias}`}>
-											<button onClick={() => handleEditarClick(dato)}>Editar</button>
+										<Link to={path} state={ {dato, accion:'Editar', opcion} }>
+											<button >Editar</button>
 										</Link>
-										<button onClick={() => openModal(dato, '¿Estas seguro de eliminar el '+opcion.toLowerCase()+' "'+dato.nombre+'" ?')}>Eliminar</button>
+										<button onClick={() => setDatoSeleccionado(dato)}>Eliminar</button>
 									</div>
 								</div>
 							)

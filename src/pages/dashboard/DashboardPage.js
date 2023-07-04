@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
   // useEffect -> Hook de react que permite ejecutar codigo cuando se renderiza el componente
     // hook -> funcion que permite agregarle funcionalidad a un componente
   // useEffect -> se ejecuta después de que el componente se renderiza en el DOM
@@ -9,13 +9,11 @@ import Footer from '../../components/FooterComponent';
 
 // Importacion de assets
 import '../../assets/css/dashboard.css';
-import { ajustarSelects } from '../../assets/js/ajustarSelects';
 
 // Importacion de datos
 import { obtenerGeneros } from '../../components/data/obtenerGeneros';
 import { obtenerPlataformas } from '../../components/data/obtenerPlataformas';
 import { obtenerJuegosFiltados } from '../../components/data/obtenerJuegosFiltrados';
-import { obtenerNombres } from '../../components/data/obtenerNombres';
 import { cargarData } from '../../components/data/cargarData.js';
 import { vaciarTabla } from '../../components/data/vaciarTabla.js'; 
 
@@ -26,19 +24,34 @@ const  DashboardPage = () => {
   const [plataformas, setPlataformas] = useState([]);
   const [nombres, setNombres] = useState([]);
   const [message, setMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const selectGenerosRef = useRef(null);
+  const selectPlataformasRef = useRef(null);
   let contenedorMensajes = []
 
   useEffect(() => {
-    obtenerNombres(baseURL, setNombres);
     obtenerGeneros(baseURL, setGeneros);
     obtenerPlataformas(baseURL, setPlataformas);
-    obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'}, () => {});
+    obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma: null, genero: null, orden: 'ASC'}, () => {});
   }, []);
 
   useEffect(() => {
-    ajustarSelects();
-  }, [generos, plataformas]);
+    if (generos.length === 0) return;
+      const cantOpciones = (selectGenerosRef.current.options.length > 5) ? 5 : selectGenerosRef.current.options.length;
+      selectGenerosRef.current.setAttribute('size', cantOpciones);
+  }, [generos]);
+  useEffect(() => {
+    if (plataformas.length === 0) return;
+    const cantOpciones = (selectPlataformasRef.current.options.length > 5) ? 5 : selectPlataformasRef.current.options.length;
+    selectPlataformasRef.current.setAttribute('size', cantOpciones);
+  }, [plataformas]);
 
+  useEffect(() => {
+    const names = juegos?.map(juego => {
+      return juego.nombre;
+    })
+    setNombres(names);
+  }, [juegos]);
 
   const handleSubmitFiltro = (event) => {
     event.preventDefault();
@@ -56,7 +69,7 @@ const  DashboardPage = () => {
       .then (() => {
         Promise.all([ cargarData(baseURL, contenedorMensajes, 'juegos')])
           .then(() => { 
-            obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma:'', genero:'', orden: 'ASC'}, () => {});
+            obtenerJuegosFiltados(baseURL, setJuegos, {nombre:'', plataforma: null, genero: null, orden: 'ASC'}, () => {});
             let msj = '';
             contenedorMensajes.forEach(e => { msj += e + '\n'; });
             setMessage(msj);
@@ -80,21 +93,13 @@ const  DashboardPage = () => {
           contenedorMensajes = [];
       })
   }
-
-  const openModal = (msj) => {
-		const modal = document.querySelector('.modal');
-		modal.style.display = 'block';
-		modal.querySelector('h2').textContent = msj;
-	}
 	const closeModal = () => {
-		const modal = document.querySelector('.modal');
-		modal.style.display = 'none';
+		setShowModal(false);
+    setMessage('');
 	}
-
   useEffect(() => {
     if (message === '') return;
-    openModal(message);
-    setMessage('');
+    setShowModal(true);
   }, [message])
 
   return (
@@ -102,14 +107,17 @@ const  DashboardPage = () => {
       <Header />
       {/*Cuerpo de la pagina*/}
       <main className="main">
-        <div className="modal">
-          <div className='contenido-modal'>
-            <h2>Cargando...</h2>
-            <div className='btns-modal'>
-              <button onClick={() => closeModal()}>Cerrar</button>
+        {showModal && (
+          <div className="modal">
+            <div className='contenido-modal'>
+              <h2>{message}</h2>
+              <div className='btns-modal'>
+                <button onClick={() => closeModal()}>Cerrar</button>
+              </div>
             </div>
           </div>
-        </div>
+          )
+        }
         <div className="contenido">
           {/*  Seccion que contiene el aside */}
           <aside className="filtros">
@@ -121,7 +129,7 @@ const  DashboardPage = () => {
                 <input id="nombres" name="nombres" list="listado-nombres" placeholder= "Hellblade: Senua's Sacrifice"/>
                 <datalist id="listado-nombres">
                   {
-                    nombres.map((nombre, idx) => {
+                    nombres?.map((nombre, idx) => {
                       return (
                         <option key={idx} value={nombre} name={nombre}></option>
                       )
@@ -132,10 +140,10 @@ const  DashboardPage = () => {
               {/* Filtro por genero */}
               <div className="bloque-filtro-genero">
                 <label htmlFor="generos" className="titulo-filtro">Por Genero</label>
-                <select name="generos" id="generos" title="listado-generos">
+                <select name="generos" id="generos" title="listado-generos" ref={selectGenerosRef}>
                   <option value="">Ninguna selección</option>
                   {
-                    generos.map((genero, idx) => {
+                    generos?.map((genero, idx) => {
                       return (
                         <option key={idx} value={genero}>{genero.nombre}</option>
                       );
@@ -147,10 +155,10 @@ const  DashboardPage = () => {
               {/* Filtro por plataforma */}
               <div className="bloque-filtro-plataforma">
                 <label htmlFor="plataformas" className="titulo-filtro">Por plataforma</label>
-                <select name="plataformas" id="plataformas" title="listado-plataformas">
+                <select name="plataformas" id="plataformas" title="listado-plataformas" ref={selectPlataformasRef}>
                   <option value="">Ninguna selección</option>
                   {
-                    plataformas.map((plataforma, idx) => {
+                    plataformas?.map((plataforma, idx) => {
                       return (
                         <option key={idx} value={plataforma}>{plataforma.nombre}</option>
                       );
@@ -162,7 +170,7 @@ const  DashboardPage = () => {
               <div className="ordenamiento_juego">
               {/* Ordenamiento por A-Z */}
               <label htmlFor="ordenamiento" className="titulo-filtro">ordenamiento</label>
-              <select name="ordenamiento" id="ordenamiento" title="listado-ordenamientos"> 
+              <select name="ordenamiento" id="ordenamiento" title="listado-ordenamientos" size={2}> 
                 <option key='1' value="ASC">A - Z</option>
                 <option key='2' value="DESC">Z - A</option>
               </select>
@@ -181,7 +189,7 @@ const  DashboardPage = () => {
           <section className="juegos">
             <div className="bloque-juegos">
             {
-              juegos.map((juego, idx) => {
+              juegos?.map((juego, idx) => {
                 return (
                   <div className='juego' id={juego.nombre} key={idx}>
                     <div className="header-juego">
@@ -197,7 +205,7 @@ const  DashboardPage = () => {
                         <p className="contenido-subtitulo">plataforma</p>
                         <ul className="plataformas-juego">
                           <li>{
-                            plataformas.find(plataforma => plataforma.id === juego.id_plataforma)?.nombre
+                            plataformas?.find(plataforma => plataforma.id === juego.id_plataforma)?.nombre
                           }</li>
                         </ul>
                       </div>
@@ -213,7 +221,7 @@ const  DashboardPage = () => {
                         <p className="contenido-subtitulo">genero</p>
                         <ul className="generos-juego">
                           <li>{
-                            generos.find(genero => genero.id === juego.id_genero)?.nombre
+                            generos?.find(genero => genero.id === juego.id_genero)?.nombre
                           }</li>
                         </ul>
                       </div>

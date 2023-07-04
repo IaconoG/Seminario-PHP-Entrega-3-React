@@ -8,8 +8,8 @@ const obtenerJuegosFiltados = async (baseURL, setJuegos, filtro, setMessage) => 
   await axios.get(baseURL + '/juegos', {
     params: {
       nombre: filtro.nombre,
-      id_plataforma: (filtro.plataforma !== '') ? Number(filtro.plataforma) : null,
-      id_genero: (filtro.genero !== '') ? Number(filtro.genero) : null,
+      id_plataforma: (filtro.plataforma) ? Number(filtro.plataforma) : null,
+      id_genero: (filtro.genero) ? Number(filtro.genero) : null,
       orden: filtro.orden
     }})
     .then(response => {

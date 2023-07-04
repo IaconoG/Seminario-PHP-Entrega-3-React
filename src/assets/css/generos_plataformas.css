@@ -28,9 +28,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, 220px);
   max-width: 90%;
-  height: 100%;
+  height: fit-content;
   gap: 2rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .opcion {
@@ -124,10 +124,16 @@ button:hover {
 .form-contenido > input {
   margin-bottom: 3rem;
 }
-
+.bien {
+  border-color: #4caf50 !important;
+}
+.mal {
+  border-color: #f44336 !important;
+}
 .enfoque {
   animation: animacion 2s forwards;
 }
+
 @keyframes animacion {
   0% {
     transform: scale(1);

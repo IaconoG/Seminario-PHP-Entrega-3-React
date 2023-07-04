@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const eliminarDato = async (baseURL, setMessage, opcion, dato, setSuccess) => {
+const eliminarDato = async (baseURL, setMessage, opcion, dato, setsuccessElimnars) => {
   opcion = opcion.toLowerCase();
   await axios.delete(baseURL + '/'+opcion+'s/'+dato.id)
   .then(response => {
       let mensaje = (opcion === 'genero') ? response.data.mensaje?.replace('dato', opcion+' "'+dato.nombre+'"') : response.data.mensaje?.replace('El dato', 'La '+opcion+' '+dato.nombre);
       setMessage(response.status+ ': '+ mensaje);
-      setSuccess(true);
+      setsuccessElimnars(true);
     })
     .catch(function (error) {
       if (error.response) {
