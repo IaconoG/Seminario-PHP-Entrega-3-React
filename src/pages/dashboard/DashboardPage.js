@@ -36,12 +36,10 @@ const  DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    if (generos.length === 0) return;
       const cantOpciones = (selectGenerosRef.current.options.length > 5) ? 5 : selectGenerosRef.current.options.length;
       selectGenerosRef.current.setAttribute('size', cantOpciones);
   }, [generos]);
   useEffect(() => {
-    if (plataformas.length === 0) return;
     const cantOpciones = (selectPlataformasRef.current.options.length > 5) ? 5 : selectPlataformasRef.current.options.length;
     selectPlataformasRef.current.setAttribute('size', cantOpciones);
   }, [plataformas]);
