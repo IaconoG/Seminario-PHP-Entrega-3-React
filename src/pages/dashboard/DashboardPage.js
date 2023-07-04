@@ -54,9 +54,10 @@ const  DashboardPage = () => {
   const handleSubmitFiltro = (event) => {
     event.preventDefault();
     let nombre = event.target.elements.nombres.value || '';
-    let plataforma = event.target.elements.plataformas.value || '';
-    let genero = event.target.elements.generos.value || '';
-    let orden = event.target.elements.ordenamiento.value || '';
+    let plataforma = event.target.elements.plataformas.value || null;
+    let genero = event.target.elements.generos.value || null;
+    let orden = event.target.elements.ordenamiento.value || 'ASC';
+    console.log(nombre, plataforma, genero, orden);
     // Llamada a la función de filtrarJuegos con los valores del formulario
     obtenerJuegosFiltados(baseURL, setJuegos, {nombre: nombre, plataforma: plataforma, genero: genero, orden: orden}, setMessage);
   };
@@ -143,7 +144,7 @@ const  DashboardPage = () => {
                   {
                     generos?.map((genero, idx) => {
                       return (
-                        <option key={idx} value={genero}>{genero.nombre}</option>
+                        <option key={idx} value={genero.id}>{genero.nombre}</option>
                       );
                     })
                     
@@ -158,7 +159,7 @@ const  DashboardPage = () => {
                   {
                     plataformas?.map((plataforma, idx) => {
                       return (
-                        <option key={idx} value={plataforma}>{plataforma.nombre}</option>
+                        <option key={idx} value={plataforma.id}>{plataforma.nombre}</option>
                       );
                     })
                     
