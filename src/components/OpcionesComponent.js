@@ -22,11 +22,12 @@ const OpcionesComponent = (props) => {
 	useEffect(() => {
 		if (opcion === 'Genero') obtenerGeneros(baseURL, setDatos)
     else obtenerPlataformas(baseURL, setDatos)
-	}, []);
+	}, [opcion]);
 
 	useEffect(() => {
 		if (!successElimnar) return;
-		setDatos(datos.filter((d) => d.id !== datoSeleccionado.id)); // No se realiza la consulta a la base de datos para actualizar la lista :D
+		if (opcion === 'Genero') obtenerGeneros(baseURL, setDatos)
+    else obtenerPlataformas(baseURL, setDatos)
 	}, [successElimnar]);
 
 	const handleEliminar = () => {
