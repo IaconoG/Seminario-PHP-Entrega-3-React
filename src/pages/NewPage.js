@@ -12,7 +12,12 @@ const EditPage = () => {
   const baseURL = 'http://localhost:8000/public';
   const navigate = useNavigate();
   const location = useLocation();
-  const { accion, opcion } = location.state;
+
+  useEffect(() => {
+    if (!location.state) navigate('/');
+  }, [navigate, location]);
+
+  const { accion, opcion } = location.state ?? { accion: null, opcion: null };
   const fromRef = useRef(null);
   const placeholder = (opcion === 'Genero') ? 'Accion' : 'PlayStation 5';
   const [message, setMessage] = useState('');

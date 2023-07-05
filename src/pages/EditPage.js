@@ -13,7 +13,14 @@ const EditPage = () => {
   const baseURL = 'http://localhost:8000/public';
   const navigate = useNavigate();
   const location = useLocation();
-  const { dato, accion, opcion } = location.state;
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    if (!location.state) navigate('/no-page');
+    else setRender(true);
+  }, [navigate, location]);
+  
+  const { dato, accion, opcion } = location.state ?? { dato: null, accion: null, opcion: null };
   const [volver, setVolver] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState('');
@@ -47,25 +54,33 @@ const EditPage = () => {
     if (message === '') return;
     setShowModal(true);
   }, [message])
-  
-
-
 
   return (
     <>
       <Header />
-      {showModal && (
-          <div className="modal">
-            <div className='contenido-modal'>
-              <h2>{message}</h2>
-              <div className='btns-modal'>
-                <button onClick={() => closeModal()}>Cerrar</button>
+      {!render ? ( 
+        <>
+          <main className='main'>
+            <h1>Cargando...</h1>
+          </main>
+        </>
+      )
+      : (
+        <>
+          {showModal && (
+              <div className="modal">
+                <div className='contenido-modal'>
+                  <h2>{message}</h2>
+                  <div className='btns-modal'>
+                    <button onClick={() => closeModal()}>Cerrar</button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          )
-        }
-      <Formulario list={{handleButton, accion: accion, opcion: opcion, placeholder: dato.nombre, defaultValue: dato.nombre, fromRef}} />
+              )
+            }
+          <Formulario list={{handleButton, accion: accion, opcion: opcion, placeholder: dato?.nombre, defaultValue: dato?.nombre, fromRef}} />
+        </>
+      )}
       <Footer />
     </>
   );
