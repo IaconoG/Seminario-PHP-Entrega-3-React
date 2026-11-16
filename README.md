@@ -1,61 +1,132 @@
-# Paginas utilizadas
+# Plataforma de juegos — Cliente web (React)
 
-## `React Router`
-https://www.w3schools.com/react/react_router.asp
+Trabajo académico desarrollado para la asignatura **Seminario de Lenguajes** (opción PHP, React y API REST).  
+Este repositorio contiene el **cliente web** de una aplicación de gestión y consulta de videojuegos, que consume la API REST del proyecto complementario. Los repositorios son independientes.
 
-## `Axios`
-https://www.freecodecamp.org/espanol/news/como-usar-axios-con-react/
+El cliente permite visualizar y filtrar el catálogo de juegos, así como administrar géneros y plataformas.
 
-## `Axios Docs`
-https://axios-http.com/es/docs/intro
+## Funcionalidades principales
 
+- Visualización del catálogo de juegos (portada, nombre, descripción, plataforma, género y enlace oficial).
+- Filtrado de juegos por nombre, género y plataforma.
+- Ordenamiento del listado de juegos de forma ascendente o descendente (A–Z / Z–A).
+- Gestión de géneros: creación, edición y eliminación.
+- Gestión de plataformas: creación, edición y eliminación.
+- Carga de datos de prueba desde los archivos JSON de la API.
+- Vaciado de las tablas de juegos, géneros y plataformas.
+- Visualización de mensajes de estado y error mediante un modal.
+- Página 404 para rutas no definidas.
 
+## Tecnologías utilizadas
 
-## `Paleta de colores`
-https://coolors.co/553d2a-5f4633-69503c-735945-7e634e-907761-ab9680-c7b69f-e3d7bf-fff9e1
+- JavaScript
+- React 18.2.0
+- React Router DOM 6.13.0
+- Axios 1.4.0
+- Create React App (react-scripts 5.0.1)
+- Testing Library (Jest DOM, React Testing Library, User Event)
 
---caf-noir: #553d2aff;
---coffee: #5f4633ff;
---coffee-2: #69503cff;
---coffee-3: #735945ff;
---coyote: #7e634eff;
---chamoisee: #907761ff;
---beaver: #ab9680ff;
---khaki: #c7b69fff;
---pearl: #e3d7bfff;
---cornsilk: #fff9e1ff;
+## Requisitos previos
 
-## `endpoints`
-**baseurl -> http://localhost:8000/public ( no pude sacar public :/ )**
+- Node.js y npm instalados.
+- La API REST del proyecto complementario en ejecución en `http://localhost:8000/public` (ver [Proyecto relacionado](#proyecto-relacionado)).
 
-| GENEROS | JUEGOS | PLATAFORMAS |
-| ------------- | ------------- | -------------
-| get(/generos) | get(/juegos) | get(/generos) |
-| post(/generos) | post(/juegos) | post(/generos) |
-| delete(/generos/{id}) | delete(/juegos/{id}) | delete(/generos/{id}) |
-| patch(/generos/{id}) | patch(/juegos/{id}) | patch(/generos/{id}) |
+## Instalación y ejecución
 
-_Nota: El get de juegos se trabaja con parametros , los mismo al estar todos vacios obtenemos todos los datos._ 
+1. Clonar el repositorio:
 
-### Rutas para cargar los datos 
-Estas rutas fueron implementadas para cargar datos predefinidos, los mismos se encuentran en archivos JSON en la API.
-| GENEROS | JUEGOS | PLATAFORMAS |
-| ------------- | ------------- | -------------
-| post(/generos/todos) | post(/juegos/todos) | post(/generos/todos) |
+   ```bash
+   git clone https://github.com/IaconoG/Seminario-PHP-Entrega-3-React.git
+   cd Seminario-PHP-Entrega-3-React
+   ```
 
-_Nota: Los campos de **id_plataforma** y **id_juegos** del JSON Juegos estan predefinidos segun los id de los datos de los JSON Generos y Plataformas, debido a esto simpre es necesario tener las tablas Genero y Plataformas vacias con su autoincremental en 0, si no la consulta de carga del JSON Juegos no funcionara._\
-**_En resumen primero ejecutar "Vaciar Data" para asegurarse que se carguen los datos de "Cargar Data"_**
+2. Instalar las dependencias:
 
+   ```bash
+   npm install
+   ```
 
+3. Ejecutar la aplicación en modo desarrollo:
 
-### Rutas para cargar los datos 
-Estas rutas fueron implementadas para eliminar todos los datos de las tablas **generos**, **plataformas** y **juegos**.
-| GENEROS | JUEGOS | PLATAFORMAS |
-| ------------- | ------------- | -------------
-| delete(/generos/{id}) | delete('/juegos/{id} | delete(/generos/{id}) |
+   ```bash
+   npm start
+   ```
 
-_Nota: En este caso no enviaremos el id como argumento si no un alias 'todos', el cual nos permite ejecutar el metodo vaciar del modelo_\
-***IMPORTANTE: Luego de vaciar las tablas se reinicia el autoincremental de las mismas.***
+La aplicación queda disponible en:
 
+```
+http://localhost:3000
+```
 
-## TODO
+Otros scripts disponibles:
+
+```bash
+npm run build   # genera la versión de producción en la carpeta build/
+npm test        # ejecuta las pruebas
+npm run eject   # expone la configuración de Create React App (irreversible)
+```
+
+## Configuración de conexión con la API
+
+La URL base de la API está definida de forma fija (hardcoded) en los componentes que la consumen:
+
+```js
+const baseURL = 'http://localhost:8000/public';
+```
+
+Aparece en los siguientes archivos:
+
+- `src/pages/dashboard/DashboardPage.js`
+- `src/pages/EditPage.js`
+- `src/pages/NewPage.js`
+- `src/components/OpcionesComponent.js`
+
+Si la API se ejecuta en otro host o puerto, es necesario modificar esa constante en cada uno de los archivos anteriores. No se utilizan variables de entorno.
+
+## Endpoints consumidos
+
+URL base: `http://localhost:8000/public`
+
+| Recurso     | Método | Ruta                 | Uso en el cliente                          |
+| ----------- | ------ | -------------------- | ------------------------------------------ |
+| Géneros     | GET    | `/generos`           | Listado para filtros y administración       |
+| Géneros     | POST   | `/generos`           | Crear género                               |
+| Géneros     | PATCH  | `/generos/{id}`      | Editar género                              |
+| Géneros     | DELETE | `/generos/{id}`      | Eliminar género                            |
+| Géneros     | POST   | `/generos/todos`     | Cargar datos iniciales                     |
+| Géneros     | DELETE | `/generos/todos`     | Vaciar tabla (`id = todos`)                |
+| Plataformas | GET    | `/plataformas`       | Listado para filtros y administración       |
+| Plataformas | POST   | `/plataformas`       | Crear plataforma                           |
+| Plataformas | PATCH  | `/plataformas/{id}`  | Editar plataforma                          |
+| Plataformas | DELETE | `/plataformas/{id}`  | Eliminar plataforma                        |
+| Plataformas | POST   | `/plataformas/todos` | Cargar datos iniciales                     |
+| Plataformas | DELETE | `/plataformas/todos` | Vaciar tabla (`id = todos`)                |
+| Juegos      | GET    | `/juegos`            | Listado y filtrado (params de consulta)    |
+| Juegos      | POST   | `/juegos/todos`      | Cargar datos iniciales                     |
+| Juegos      | DELETE | `/juegos/todos`      | Vaciar tabla (`id = todos`)                |
+
+`GET /juegos` acepta los parámetros de consulta `nombre`, `id_genero`, `id_plataforma` y `orden` (`ASC` o `DESC`).
+
+## Estructura del proyecto
+
+```
+src/
+├── App.js                 # Definición de rutas
+├── index.js               # Punto de entrada
+├── components/
+│   ├── data/              # Funciones de acceso a la API (Axios)
+│   ├── *Component.js      # Componentes reutilizables (header, footer, etc.)
+├── pages/                 # Páginas (dashboard, géneros, plataformas, edición, creación, 404)
+└── assets/                # Estilos CSS e imágenes
+```
+
+## Proyecto relacionado
+
+API REST (backend): [Seminario-PHP-Entrega-2-APIRest-Slim](https://github.com/IaconoG/Seminario-PHP-Entrega-2-APIRest-Slim)
+
+El backend debe estar en ejecución para que el cliente pueda funcionar. Consulte su README para la instalación, la configuración de la base de datos y los endpoints disponibles.
+
+## Notas
+
+- El cliente no gestiona juegos de forma individual (no hay creación/edición/eliminación de un juego desde la interfaz); el catálogo se visualiza y filtra, y la carga/vaciado de juegos se realiza mediante los endpoints `.../todos`.
+- La prueba incluida (`src/App.test.js`) corresponde a la plantilla por defecto de Create React App y no cubre la funcionalidad de la aplicación.
